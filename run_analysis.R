@@ -1,14 +1,30 @@
 library(dplyr)
-#step 0: read files
+#step 0: downlaod files
 
-features <- 'UCI_HAR_Dataset/features.txt'
-label_activity_file <- 'UCI_HAR_Dataset/activity_labels.txt'
-train_data_file<-'UCI_HAR_Dataset/train/X_train.txt'
-train_label_file <- 'UCI_HAR_Dataset/train/y_train.txt'
-train_subject_file <- 'UCI_HAR_Dataset/train/subject_train.txt'
-test_data_file <-'UCI_HAR_Dataset/test/X_test.txt'
-test_label_file <- 'UCI_HAR_Dataset/test/y_test.txt'
-test_subject_file <- 'UCI_HAR_Dataset/test/subject_test.txt'
+zipUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+zipFile <- "UCI HAR Dataset.zip"
+
+if (!file.exists(zipFile)) {
+  download.file(zipUrl, zipFile, mode = "wb")
+}
+
+# unzip zip file containing data if data directory doesn't already exist
+dataPath <- "UCI HAR Dataset"
+if (!file.exists(dataPath)) {
+  unzip(zipFile)
+}
+
+
+#step1: Merges the training and the test sets to create one data set.
+
+features <- paste(dataPath, '/features.txt', sep = "")
+label_activity_file <- paste(dataPath, '/activity_labels.txt', sep = "")
+train_data_file<-paste(dataPath, '/train/X_train.txt', sep = "")
+train_label_file <- paste(dataPath, '/train/y_train.txt', sep = "")
+train_subject_file <- paste(dataPath, '/train/subject_train.txt', sep = "")
+test_data_file <-paste(dataPath, '/test/X_test.txt', sep = "")
+test_label_file <- paste(dataPath, '/test/y_test.txt', sep = "")
+test_subject_file <- paste(dataPath, '/test/subject_test.txt', sep = "")
 
 #read features.txt into list
 features <- read.csv(features, header = F, sep='')[['V2']]
